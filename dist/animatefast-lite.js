@@ -1,10 +1,10 @@
-/*! gFLUO Motion Standard prototype v0.1.0
+/*! gFLUO Motion Standard prototype v0.1.1
  *  Needs gsap + ScrollTrigger + SplitText (all free: https://gsap.com/standard-license).
  *  Attributes: data-motion, data-motion-trigger|delay|duration|stagger|start|from. Legacy data-gsap aliases kept. */
 (function() {
   "use strict";
   var W = window, D = document, H = D.documentElement;
-  var VERSION = "0.1.0";
+  var VERSION = "0.1.1";
   var mq = function(q) {
     return !!(W.matchMedia && W.matchMedia(q).matches);
   };
@@ -88,9 +88,17 @@
   function stg(o, d) {
     return o.stagger === void 0 ? d : { each: o.stagger, from: d && d.from, ease: d && d.ease };
   }
+  // Default start "top 80%" is unreachable for elements in the last ~20% of the
+  // final screen (footers). GSAP clamp() moves the start up to max scroll so the
+  // effect still fires. An explicit data-motion-start is honoured and also clamped
+  // if that value would itself be unreachable.
+  function clampedStart(s) {
+    s = s || "top 80%";
+    return s.indexOf("clamp(") === 0 ? s : "clamp(" + s + ")";
+  }
   function arm(el, o, play) {
     if (o.trigger === "load") play();
-    else ScrollTrigger.create({ trigger: el, start: o.start, once: true, onEnter: play });
+    else ScrollTrigger.create({ trigger: el, start: clampedStart(o.start), once: true, onEnter: play });
   }
   function sibIndex(el) {
     var n = 0, s = el.parentElement ? el.parentElement.children : [];

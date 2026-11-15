@@ -93,8 +93,8 @@ const FROM_OK = { "image-wipe": ["center", "left", "right", "top", "bottom"], "m
     if (e.nested) add("error", "nested", e, "inside another data-motion element (animates twice); put the attribute on one of them");
     if (e.ix) add("warn", "webflow-ix", e, "has a Webflow Interaction (data-w-id); do not combine with data-motion");
     const inFirst = e.top < page.vh;
-    // scroll start "top 80%" is never reached by elements in the last ~20% of the final screen (footer taglines)
-    if (tr === "scroll" && !e.attrs["data-motion-start"] && e.top > page.docH - page.vh * 0.2) add("error", "start-unreachable", e, `starts at ${Math.round(e.top)}px but the page ends at ${page.docH}px, so "top 80%" never fires; add data-motion-start="top bottom"`);
+    // hint only: the runtime clamps the default start, so footers still fire
+    if (tr === "scroll" && !e.attrs["data-motion-start"] && e.top > page.docH - page.vh * 0.2) add("hint", "start-unreachable", e, `starts at ${Math.round(e.top)}px but the page ends at ${page.docH}px; the runtime clamps the start so the effect still fires. Optional: set data-motion-start if you want a specific point`);
     if (tr === "load" && !inFirst) add("error", "load-below-fold", e, `trigger load but starts at ${Math.round(e.top)}px (first screen is ${page.vh}px)`);
     if (tr === "scroll" && inFirst && e.top + e.h * 0.2 < page.vh * 0.8 && fx.trigger !== "hover") add("warn", "first-screen-scroll", e, "in the first screen with a scroll trigger; use load so it does not wait for ScrollTrigger");
     if (inFirst && isChar(slug)) firstScreenChar.push(e);
@@ -129,12 +129,13 @@ const FROM_OK = { "image-wipe": ["center", "left", "right", "top", "bottom"], "m
   if (page.els.length && !/\[data-motion\]/.test(page.headCss)) add("warn", "prehide-missing", null, "pre-hide CSS (head.html) not found; content may flash");
   if (page.legacy) add("info", "legacy", null, `${page.legacy} legacy data-gsap elements (aliased by the runtime)`);
 
-  const errors = out.filter(o => o.lvl === "error").length, warns = out.filter(o => o.lvl === "warn").length;
-  if (flag("--json")) console.log(JSON.stringify({ url, elements: page.els.length, distinct: [...slugs], errors, warnings: warns, findings: out }, null, 1));
+  const errors = out.filter(o => o.lvl === "error").length, warns = out.filter(o => o.lvl === "warn").length, hints = out.filter(o => o.lvl === "hint").length;
+  if (flag("--json")) console.log(JSON.stringify({ url, elements: page.els.length, distinct: [...slugs], errors, warnings: warns, hints, findings: out }, null, 1));
   else {
     console.log(`${url}\n${page.els.length} animated elements, ${slugs.size} distinct effects`);
     out.forEach(o => console.log(`${o.lvl.toUpperCase().padEnd(5)} ${o.rule.padEnd(24)} ${o.el}: ${o.msg}`));
-    console.log(errors ? `FAIL: ${errors} errors, ${warns} warnings` : `PASS: 0 errors, ${warns} warnings`);
+    const extra = (warns ? `, ${warns} warnings` : ", 0 warnings") + (hints ? `, ${hints} hints` : "");
+    console.log(errors ? `FAIL: ${errors} errors${extra}` : `PASS: 0 errors${extra}`);
   }
   process.exit(errors ? 1 : 0);
 })().catch(e => { console.error("could not run: " + e.message); process.exit(2); });

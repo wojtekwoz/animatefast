@@ -6,7 +6,7 @@
   "data-motion-delay": "seconds",
   "data-motion-duration": "seconds, overrides the effect default",
   "data-motion-stagger": "seconds between items (text: between chars/words/lines, elements: between same-effect siblings)",
-  "data-motion-start": "ScrollTrigger start, default top 80%",
+  "data-motion-start": "ScrollTrigger start, default top 80% (runtime clamps it so footer elements still fire)",
   "data-motion-from": "image-wipe: center|left|right|top|bottom; magnetic: text"
  },
  "effects": [

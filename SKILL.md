@@ -26,7 +26,7 @@ Read `references/SPEC.md` once per session. It is the source of truth for effect
 - With a styleguide: take the role's list from `roles` (first item is the default). If the user's words match another effect in that list, use it. If they match a banned (`never`) or off-role effect, say it is off-brand, offer the role default, and only use theirs if they confirm.
 - Without one: match the user's words against the "use when / user might say" column in SPEC.md. Ties go to the effect higher in the table.
 - Check the element fits: `char-*` and `typewriter` only on text under 120 characters (typewriter under 60), `line-slide-up` for paragraphs, `element-*` for blocks, `image-rise-tilt` for images.
-- Element near the very bottom of the page (footer, last CTA)? Add `data-motion-start="top bottom"`, otherwise the default start is never reached (the linter flags this as start-unreachable).
+- Element near the very bottom of the page (footer, last CTA)? The runtime clamps the default start, so the effect still fires. You can set `data-motion-start` if you want a specific point. The linter may hint `start-unreachable`; that is not an error.
 
 ### 2b. Apply the tokens
 - `tempo` not 1: `data-motion-duration` = default duration x tempo (SPEC.md 4.3), rounded to 0.05. Typewriter: `data-motion-stagger` = 0.05 x tempo instead.
@@ -38,7 +38,7 @@ Read `references/SPEC.md` once per session. It is the source of truth for effect
 Use the styleguide roles: hero heading with `load`; hero body with `load` and `delay 0.3`; hero image or badge with `load` and `delay 0.2`. Below the first screen: headings, body, cards, images per role. Stop adding effects at `max_effects` (prefer leaving a role static over adding a new effect). One letter-level effect in view at a time. Skip nav, forms, footer legal text.
 
 ### 4. Install the runtime once
-Check the page/site head for `animatefast-lite` (or `MotionStandard` in an inline script). If missing, add the head block from SPEC.md section 1. The script comes from jsDelivr (`cdn.jsdelivr.net/gh/wojtekwoz/animatefast@v0.1.0/dist/animatefast-lite.min.js`, with the `integrity` hash). If Webflow already loads GSAP via Site settings, add only the animatefa.st part. If the jsDelivr URL is not reachable (404 means the repo is not public yet, or you are offline), use the fallback instead of giving up: plain HTML gets a self-hosted copy of `dist/animatefast-lite.min.js` next to the page; Webflow gets the inline paste (option B in SPEC.md, about 7,300 characters, under Webflow's 50,000 limit). Say which one you used.
+Check the page/site head for `animatefast-lite` (or `MotionStandard` in an inline script). If missing, add the head block from SPEC.md section 1. The script comes from jsDelivr (`cdn.jsdelivr.net/gh/wojtekwoz/animatefast@v0.1.1/dist/animatefast-lite.min.js`, with the `integrity` hash). If Webflow already loads GSAP via Site settings, add only the animatefa.st part. If the jsDelivr URL is not reachable (404 means the repo is not public yet, or you are offline), use the fallback instead of giving up: plain HTML gets a self-hosted copy of `dist/animatefast-lite.min.js` next to the page; Webflow gets the inline paste (option B in SPEC.md, about 7,200 characters, under Webflow's 50,000 limit). Say which one you used.
 
 ### 5. Apply
 - **Plain HTML / exported Webflow code / DevLink:** edit the element's opening tag. Keep every existing attribute and class.
@@ -62,5 +62,5 @@ One short message: styleguide used or created (preset), what you changed (elemen
 | "Spokojne wejście nagłówka sekcji słowo po słowie" (no styleguide) | `<h2 data-motion="word-slide-up" data-motion-duration="1.2">` |
 | "Ożyw całą stronę", brand is a quiet architecture studio | create `MOTION.md` with preset `calm`; hero `word-slide-up` + `line-slide-up` with duration 1.05, image `image-rise-tilt` with duration 1.55; cards stay static |
 | "Make the badge pop letter by letter" with a `calm` MOTION.md | off-brand (`char-pop` is in `never`, badge is `none`): say so, leave it static unless the user confirms |
-| "Tagline w stopce ma się pisać jak na maszynie" | `<p data-motion="typewriter" data-motion-start="top bottom">` (under 60 chars; footer) |
+| "Tagline w stopce ma się pisać jak na maszynie" | `<p data-motion="typewriter">` (under 60 chars; footer, no special start attribute needed) |
 | "Add parallax to the hero background" | not in Lite: say so, offer a reveal instead, change nothing |

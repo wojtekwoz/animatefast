@@ -4,7 +4,7 @@
 
 > Plain-language text animations for Webflow and HTML. You (the agent) pick one of 12 named effects and write ONE attribute: `data-motion="<effect>"`. A small runtime (GSAP 3.15 + ScrollTrigger + SplitText, all free) does the rest: timing, easing, splitting, accessibility. Never write GSAP code yourself for these effects.
 
-Status: prototype, 15 Nov 2026. Runtime v0.1.0 tested headless. The jsDelivr URL goes live when the GitHub repo is public (see Install).
+Status: prototype, 15 Nov 2026. Runtime v0.1.1 tested headless. The jsDelivr URL is pinned to tag `v0.1.1` (see Install).
 
 ## 1. Install (once per site)
 
@@ -16,15 +16,15 @@ Put this in the page `<head>` (Webflow: Site settings > Custom code > Head code,
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.1/dist/gsap.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.1/dist/ScrollTrigger.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.1/dist/SplitText.min.js" defer></script>
-<script src="https://cdn.jsdelivr.net/gh/wojtekwoz/animatefast@v0.1.0/dist/animatefast-lite.min.js" integrity="sha384-g1Me9yP9YbrRqi7dkPlYLijNBmEd/2a5sg1K3yIAKK6CMq4OhOnraFUe/fyqHxDT" crossorigin="anonymous" defer></script>
+<script src="https://cdn.jsdelivr.net/gh/wojtekwoz/animatefast@v0.1.1/dist/animatefast-lite.min.js" integrity="sha384-NduON8+acxhHUZVpchMMEz+smjiRFa/dnz/paVPxRatiDv1bV09pnceoIfmdMT5/" crossorigin="anonymous" defer></script>
 ```
 
-- The animatefa.st script is served by jsDelivr straight from the public GitHub repo `wojtekwoz/animatefast`, pinned to the tag `v0.1.0` (pinned tags are cached for good and match the `integrity` hash). If the URL returns 404, the repo is not public yet: use option B or C.
+- The animatefa.st script is served by jsDelivr straight from the public GitHub repo `wojtekwoz/animatefast`, pinned to the tag `v0.1.1` (pinned tags are cached for good and match the `integrity` hash). If the URL returns 404, use option B or C.
 - Order matters: GSAP, ScrollTrigger, SplitText, then animatefa.st Lite. All `defer`.
 - If Webflow already loads GSAP (Site settings > GSAP toggles with ScrollTrigger and SplitText on), do not load it twice: keep only the style, the small inline script and the animatefa.st script.
 - The first `<style>` + `<script>` pair stops a flash of the un-animated text and reveals everything after 3 s if any script fails.
 
-**Option B, inline paste (no hosting at all).** Replace the last `<script src=...>` line with `<script>` + the full contents of `dist/animatefast-lite.min.js` + `</script>`. The file is 6,464 characters, so the whole head block is about 7,300 characters. Webflow's Head code field takes up to 50,000 characters (custom code needs a paid site plan), so this fits with room to spare. Keep it after the GSAP tags; it waits for the page to finish parsing, so the deferred GSAP files are ready by then. GSAP itself (about 70 KB) is too big to inline: load it from jsDelivr as above or use Webflow's GSAP toggle. Webflow MCP inline scripts are capped at 2,000 characters, so over MCP use the hosted URL (option A).
+**Option B, inline paste (no hosting at all).** Replace the last `<script src=...>` line with `<script>` + the full contents of `dist/animatefast-lite.min.js` + `</script>`. The file is 6,544 characters, so the whole head block is about 7,200 characters. Webflow's Head code field takes up to 50,000 characters (custom code needs a paid site plan), so this fits with room to spare. Keep it after the GSAP tags; it waits for the page to finish parsing, so the deferred GSAP files are ready by then. GSAP itself (about 70 KB) is too big to inline: load it from jsDelivr as above or use Webflow's GSAP toggle. Webflow MCP inline scripts are capped at 2,000 characters, so over MCP use the hosted URL (option A).
 
 **Option C, self-host.** Plain HTML or exported code: copy `dist/animatefast-lite.min.js` next to the page and point the `src` at it (drop `integrity` if you change the file).
 
@@ -37,7 +37,7 @@ Put this in the page `<head>` (Webflow: Site settings > Custom code > Head code,
 | `data-motion-delay` | seconds, `0` to `2` | `0` | plain number, no unit: `0.3` |
 | `data-motion-duration` | seconds, `0.2` to `2` | per effect | slower = calmer |
 | `data-motion-stagger` | seconds, `0` to `1` | per effect | text: between letters/words/lines. Elements: between siblings with the same effect |
-| `data-motion-start` | ScrollTrigger start | `top 80%` | rarely needed |
+| `data-motion-start` | ScrollTrigger start | `top 80%` (clamped) | rarely needed; the runtime clamps the default so footer elements still fire |
 
 Nothing else exists. Do not invent attributes (no ease, distance, direction, repeat).
 
@@ -150,7 +150,7 @@ Do
 2. Use `load` for everything in the first screen, `scroll` (default) below it.
 3. Keep at most 5 different effects on a page and at most one letter-level effect (`char-*`, `typewriter`) visible at a time.
 4. Keep the first screen done in about 1.5 s (a 40-letter headline with `char-fade-down` takes 1.6 s, so use `stagger 0.02` or `word-slide-up`).
-5. Elements in the last screen of the page (footer tagline, final CTA near the bottom) must get `data-motion-start="top bottom"`: the default start `top 80%` is never reached when the page cannot scroll further, so they would stay hidden until the 3 s failsafe.
+5. The runtime clamps the default scroll start (`top 80%`) so elements in the last screen (footer tagline, final CTA) still fire when the page cannot scroll further. You do not need `data-motion-start="top bottom"`. You can still set `data-motion-start` if you want a specific trigger point.
 6. Re-send existing attributes when an API replaces them (Webflow `set_attributes`).
 7. Verify in a real browser after editing (skill: `scripts/verify.cjs` and `scripts/lint.cjs --styleguide MOTION.md`).
 
@@ -164,7 +164,7 @@ Don't
 ## 7. Webflow specifics
 
 - Designer, by hand: Element settings (D) > Custom attributes > + > Name `data-motion`, Value e.g. `word-slide-up`.
-- Webflow MCP: `data_element_tool` `get_attributes` then `set_attributes` with existing + new attributes. Scripts: `data_scripts_tool` `register_hosted_script` with `hosted_location` = the jsDelivr URL, `integrity_hash` = `sha384-g1Me9yP9YbrRqi7dkPlYLijNBmEd/2a5sg1K3yIAKK6CMq4OhOnraFUe/fyqHxDT`, `version` `0.1.0`, `display_name` `animatefa.st Lite`, then `add_site_script` (MCP inline scripts are capped at 2,000 characters, so use the hosted URL; or the user pastes option B in Site settings). Call `webflow_guide_tool` first, tool names change between MCP versions.
+- Webflow MCP: `data_element_tool` `get_attributes` then `set_attributes` with existing + new attributes. Scripts: `data_scripts_tool` `register_hosted_script` with `hosted_location` = the jsDelivr URL, `integrity_hash` = `sha384-NduON8+acxhHUZVpchMMEz+smjiRFa/dnz/paVPxRatiDv1bV09pnceoIfmdMT5/`, `version` `0.1.1`, `display_name` `animatefa.st Lite`, then `add_site_script` (MCP inline scripts are capped at 2,000 characters, so use the hosted URL; or the user pastes option B in Site settings). Call `webflow_guide_tool` first, tool names change between MCP versions.
 - Exported code / DevLink / plain HTML: edit the markup directly.
 
 ## 8. Examples
