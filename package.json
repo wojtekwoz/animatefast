@@ -1,0 +1,13 @@
+{
+  "name": "animatefast",
+  "version": "0.1.0",
+  "private": true,
+  "description": "gFLUO Motion Lite: 12 GSAP text and element animations an AI coding agent applies with one data-motion attribute, plus lint and render checks.",
+  "scripts": {
+    "lint": "node scripts/lint.cjs",
+    "verify": "node scripts/verify.cjs"
+  },
+  "dependencies": {
+    "puppeteer-core": "^24.0.0"
+  }
+}

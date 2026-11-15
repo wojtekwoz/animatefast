@@ -1,0 +1,214 @@
+{
+ "version": "0.1.0",
+ "attributes": {
+  "data-motion": "effect slug",
+  "data-motion-trigger": "scroll (default) | load | hover (implicit for button and magnetic effects)",
+  "data-motion-delay": "seconds",
+  "data-motion-duration": "seconds, overrides the effect default",
+  "data-motion-stagger": "seconds between items (text: between chars/words/lines, elements: between same-effect siblings)",
+  "data-motion-start": "ScrollTrigger start, default top 80%",
+  "data-motion-from": "image-wipe: center|left|right|top|bottom; magnetic: text"
+ },
+ "effects": [
+  {
+   "slug": "char-fade-down",
+   "family": "text",
+   "tier": "lite",
+   "trigger": "scroll",
+   "targets": "headings and short text (under ~120 characters)",
+   "legacy": "txt.1",
+   "plugins": [
+    "ScrollTrigger",
+    "SplitText"
+   ],
+   "defaults": "split chars; from {opacity 0, y -20}; 0.4s; stagger 0.03; power2.out",
+   "perf": "low",
+   "reduced_motion": "show-final",
+   "markup": "<h1 data-motion=\"char-fade-down\">Build faster with motion</h1>",
+   "options": "duration 0.3-0.8, stagger 0.02-0.06, trigger load for above-the-fold headlines"
+  },
+  {
+   "slug": "char-flip-y",
+   "family": "text",
+   "tier": "lite",
+   "trigger": "scroll",
+   "targets": "short headings",
+   "legacy": "free.2",
+   "plugins": [
+    "ScrollTrigger",
+    "SplitText"
+   ],
+   "defaults": "split chars; from {opacity 0, rotationY -180}; 0.8s; total stagger 1s; power2.out",
+   "perf": "low",
+   "reduced_motion": "show-final",
+   "markup": "<h2 data-motion=\"char-flip-y\">Flip into place</h2>",
+   "options": "duration, delay (stagger is a total of 1 s unless data-motion-stagger sets seconds per letter)"
+  },
+  {
+   "slug": "char-scale-blur",
+   "family": "text",
+   "tier": "lite",
+   "trigger": "scroll",
+   "targets": "short headings",
+   "legacy": "txt.16",
+   "plugins": [
+    "ScrollTrigger",
+    "SplitText"
+   ],
+   "defaults": "split chars; from {opacity 0, scale 2, blur 10px}; 0.8s; stagger 0.03; power2.out",
+   "perf": "medium",
+   "reduced_motion": "show-final",
+   "markup": "<h1 data-motion=\"char-scale-blur\">Into focus</h1>",
+   "options": "duration, stagger, trigger"
+  },
+  {
+   "slug": "char-pop",
+   "family": "text",
+   "tier": "lite",
+   "trigger": "scroll",
+   "targets": "short headings",
+   "legacy": "free.3",
+   "plugins": [
+    "ScrollTrigger",
+    "SplitText"
+   ],
+   "defaults": "split chars; from {opacity 0, scale 0}; 0.4s; total stagger 0.8s; back.out(2)",
+   "perf": "low",
+   "reduced_motion": "show-final",
+   "markup": "<h2 data-motion=\"char-pop\">Pop pop pop</h2>",
+   "options": "duration, delay"
+  },
+  {
+   "slug": "char-wave",
+   "family": "text",
+   "tier": "lite",
+   "trigger": "scroll",
+   "targets": "short headings",
+   "legacy": "free.1",
+   "plugins": [
+    "ScrollTrigger",
+    "SplitText"
+   ],
+   "defaults": "split chars; from {opacity 0, y 40}; 0.3s; stagger 0.02 with sine.inOut distribution; power2.out",
+   "perf": "low",
+   "reduced_motion": "show-final",
+   "markup": "<h2 data-motion=\"char-wave\">A wave of letters</h2>",
+   "options": "duration, stagger"
+  },
+  {
+   "slug": "word-slide-up",
+   "family": "text",
+   "tier": "lite",
+   "trigger": "scroll",
+   "targets": "headings and short paragraphs (under ~25 words)",
+   "legacy": "txt.20",
+   "plugins": [
+    "ScrollTrigger",
+    "SplitText"
+   ],
+   "defaults": "split words; from {opacity 0, y 50}; 0.8s; stagger 0.1; power2.out",
+   "perf": "low",
+   "reduced_motion": "show-final",
+   "markup": "<h2 data-motion=\"word-slide-up\">Words slide up into place</h2>",
+   "options": "duration, stagger, trigger"
+  },
+  {
+   "slug": "line-slide-up",
+   "family": "text",
+   "tier": "lite",
+   "trigger": "scroll",
+   "targets": "paragraphs of any length",
+   "legacy": "par.1",
+   "plugins": [
+    "ScrollTrigger",
+    "SplitText"
+   ],
+   "defaults": "split lines; from {opacity 0, y 20}; 0.8s; total stagger 0.15s; power2.out",
+   "perf": "low",
+   "reduced_motion": "show-final",
+   "markup": "<p data-motion=\"line-slide-up\">A long paragraph...</p>",
+   "options": "duration, delay, trigger"
+  },
+  {
+   "slug": "element-from-bottom",
+   "family": "element",
+   "tier": "lite",
+   "trigger": "scroll",
+   "targets": "any block, card, button or image",
+   "legacy": "el.6",
+   "plugins": [
+    "ScrollTrigger"
+   ],
+   "defaults": "from {opacity 0, y 88}; 0.75s; back.inOut(2)",
+   "perf": "low",
+   "reduced_motion": "show-final",
+   "markup": "<div data-motion=\"element-from-bottom\">...</div>",
+   "options": "duration, delay, stagger (seconds between siblings that use the same effect, capped at 1 s)"
+  },
+  {
+   "slug": "element-from-left",
+   "family": "element",
+   "tier": "lite",
+   "trigger": "scroll",
+   "targets": "any block",
+   "legacy": "el.4",
+   "plugins": [
+    "ScrollTrigger"
+   ],
+   "defaults": "from {opacity 0, x -100}; 0.75s; back.inOut(2)",
+   "perf": "low",
+   "reduced_motion": "show-final",
+   "markup": "<div data-motion=\"element-from-left\">...</div>",
+   "options": "duration, delay, stagger"
+  },
+  {
+   "slug": "element-scale-in",
+   "family": "element",
+   "tier": "lite",
+   "trigger": "scroll",
+   "targets": "any block, badge, icon",
+   "legacy": "el.5",
+   "plugins": [
+    "ScrollTrigger"
+   ],
+   "defaults": "from {opacity 0, scale 0}; 0.5s; power1.inOut",
+   "perf": "low",
+   "reduced_motion": "show-final",
+   "markup": "<div data-motion=\"element-scale-in\">...</div>",
+   "options": "duration, delay, stagger"
+  },
+  {
+   "slug": "image-rise-tilt",
+   "family": "image",
+   "tier": "lite",
+   "trigger": "scroll",
+   "targets": "img and image blocks",
+   "legacy": "img.8",
+   "plugins": [
+    "ScrollTrigger"
+   ],
+   "defaults": "from {opacity 0, y 100, rotation 5}; 1.2s; power2.out",
+   "perf": "low",
+   "reduced_motion": "show-final",
+   "markup": "<img data-motion=\"image-rise-tilt\" src=\"...\" alt=\"...\">",
+   "options": "duration, delay, stagger"
+  },
+  {
+   "slug": "typewriter",
+   "family": "text",
+   "tier": "lite",
+   "trigger": "scroll",
+   "targets": "one short line (under ~60 characters)",
+   "legacy": "txt.10",
+   "plugins": [
+    "ScrollTrigger",
+    "SplitText"
+   ],
+   "defaults": "split chars; each char appears every 0.05s; blinking | cursor",
+   "perf": "low",
+   "reduced_motion": "show-final",
+   "markup": "<h2 data-motion=\"typewriter\">Typed out, one key at a time.</h2>",
+   "options": "stagger = seconds per character (default 0.05), delay, trigger"
+  }
+ ]
+}

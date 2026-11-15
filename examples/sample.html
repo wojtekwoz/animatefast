@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Northbeam Studio</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font:17px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;color:#151515;background:#f6f4ef}
+.nav{display:flex;justify-content:space-between;align-items:center;padding:20px 6vw}.nav a{color:inherit;text-decoration:none;margin-left:22px;font-size:15px}
+.brand{font-weight:800;letter-spacing:-.02em}
+.hero{min-height:700px;padding:70px 6vw 40px;display:flex;flex-direction:column;justify-content:center;gap:22px;background:radial-gradient(90% 90% at 80% 10%,#ffd9b8 0%,#f6f4ef 60%)}
+.badge{align-self:flex-start;background:#151515;color:#c8ff5a;font-weight:700;font-size:13px;letter-spacing:.06em;padding:7px 14px;border-radius:999px}
+.hero-title{font-size:clamp(44px,7vw,92px);line-height:1;margin:0;letter-spacing:-.035em;max-width:900px}
+.hero-sub{font-size:21px;max-width:560px;margin:0;color:#444}
+.section{padding:110px 6vw}.section h2{font-size:48px;letter-spacing:-.02em;margin:0 0 28px;max-width:760px;line-height:1.05}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.feature-card{background:#fff;border-radius:18px;padding:28px;box-shadow:0 10px 30px rgba(0,0,0,.06)}.feature-card h3{margin:0 0 8px}
+.product{background:#151515;color:#f6f4ef}.hero-shot{display:block;width:min(820px,100%);border-radius:16px;box-shadow:0 30px 60px rgba(0,0,0,.4)}
+.about-text{max-width:640px;font-size:19px;color:#333}
+.footer{padding:60px 6vw;border-top:1px solid #ddd;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-tagline{font-size:22px;font-weight:700;margin:0}.legal{font-size:13px;color:#777;margin:0}
+</style>
+</head><body>
+<nav class="nav"><span class="brand">Northbeam</span><div><a href="#work">Work</a><a href="#about">About</a><a href="#contact">Contact</a></div></nav>
+<header class="hero">
+  <div class="badge">New</div>
+  <h1 class="hero-title">Websites that move people</h1>
+  <p class="hero-sub">We design and build Webflow sites for product teams who care about the details, from the first sketch to the last pixel.</p>
+</header>
+<section class="section" id="work">
+  <h2 class="features-title">What we do</h2>
+  <div class="features">
+    <div class="feature-card"><h3>Strategy</h3><p>Positioning and site structure that makes the next step obvious.</p></div>
+    <div class="feature-card"><h3>Design</h3><p>Interfaces with taste, built on a system your team can extend.</p></div>
+    <div class="feature-card"><h3>Webflow build</h3><p>Fast, accessible pages your marketers can edit without fear.</p></div>
+  </div>
+</section>
+<section class="section product">
+  <h2>See it in action</h2>
+  <img class="hero-shot" alt="Product screenshot" width="820" height="480" src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='820' height='480'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237c5cff'/%3E%3Cstop offset='1' stop-color='%23ff6b6b'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='820' height='480' rx='16' fill='url(%23g)'/%3E%3Crect x='40' y='40' width='740' height='36' rx='8' fill='white' opacity='.85'/%3E%3Crect x='40' y='110' width='340' height='300' rx='12' fill='white' opacity='.6'/%3E%3Crect x='410' y='110' width='370' height='140' rx='12' fill='white' opacity='.45'/%3E%3Crect x='410' y='270' width='370' height='140' rx='12' fill='white' opacity='.3'/%3E%3C/svg%3E">
+</section>
+<section class="section" id="about">
+  <h2 class="about-title">A small studio with a big eye for motion</h2>
+  <p class="about-text">Northbeam is four people in Gdańsk. We have shipped more than sixty Webflow sites since 2019, and we still review every animation on a real phone before it goes live, because motion that stutters is worse than no motion at all.</p>
+</section>
+<footer class="footer" id="contact">
+  <p class="footer-tagline">Made with care in Gdańsk.</p>
+  <p class="legal">© 2026 Northbeam Studio. All rights reserved.</p>
+</footer>
+</body></html>
