@@ -1,6 +1,6 @@
 {
   "name": "animatefast",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "description": "gFLUO Motion Lite: 12 GSAP text and element animations an AI coding agent applies with one data-motion attribute, plus lint and render checks.",
   "scripts": {

@@ -4,7 +4,7 @@
 
 > Plain-language text animations for Webflow and HTML. You (the agent) pick one of 12 named effects and write ONE attribute: `data-motion="<effect>"`. A small runtime (GSAP 3.15 + ScrollTrigger + SplitText, all free) does the rest: timing, easing, splitting, accessibility. Never write GSAP code yourself for these effects.
 
-Status: prototype, 15 Nov 2026. Runtime v0.1.1 tested headless. The jsDelivr URL is pinned to tag `v0.1.1` (see Install).
+Status: prototype, 15 Nov 2026. Release v0.1.2, runtime unchanged since v0.1.1 and tested headless. The jsDelivr URL is pinned to tag `v0.1.2` (see Install).
 
 ## 1. Install (once per site)
 
@@ -16,10 +16,10 @@ Put this in the page `<head>` (Webflow: Site settings > Custom code > Head code,
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.1/dist/gsap.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.1/dist/ScrollTrigger.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.1/dist/SplitText.min.js" defer></script>
-<script src="https://cdn.jsdelivr.net/gh/wojtekwoz/animatefast@v0.1.1/dist/animatefast-lite.min.js" integrity="sha384-NduON8+acxhHUZVpchMMEz+smjiRFa/dnz/paVPxRatiDv1bV09pnceoIfmdMT5/" crossorigin="anonymous" defer></script>
+<script src="https://cdn.jsdelivr.net/gh/wojtekwoz/animatefast@v0.1.2/dist/animatefast-lite.min.js" integrity="sha384-NduON8+acxhHUZVpchMMEz+smjiRFa/dnz/paVPxRatiDv1bV09pnceoIfmdMT5/" crossorigin="anonymous" defer></script>
 ```
 
-- The animatefa.st script is served by jsDelivr straight from the public GitHub repo `wojtekwoz/animatefast`, pinned to the tag `v0.1.1` (pinned tags are cached for good and match the `integrity` hash). If the URL returns 404, use option B or C.
+- The animatefa.st script is served by jsDelivr straight from the public GitHub repo `wojtekwoz/animatefast`, pinned to the tag `v0.1.2` (pinned tags are cached for good and match the `integrity` hash). If the URL returns 404, use option B or C.
 - Order matters: GSAP, ScrollTrigger, SplitText, then animatefa.st Lite. All `defer`.
 - If Webflow already loads GSAP (Site settings > GSAP toggles with ScrollTrigger and SplitText on), do not load it twice: keep only the style, the small inline script and the animatefa.st script.
 - The first `<style>` + `<script>` pair stops a flash of the un-animated text and reveals everything after 3 s if any script fails.
@@ -65,8 +65,11 @@ Modifiers in the request:
 - "fast / snappy / szybko": lower duration about 0.6x.
 - "on load / hero / first screen / od razu / po załadowaniu": `data-motion-trigger="load"` (only if the element really is in the first screen).
 - "one after another / po kolei" on several blocks: same effect on each sibling + `data-motion-stagger="0.12"`.
+- "pop in / pop / bounce in" on a block (badge, button, card, image, tag): `element-scale-in`. Letter effects only when the user explicitly asks for letters or "letter by letter". Example: "Make the 'New' badge pop in" = `.badge` gets `element-scale-in` + `load`, not `char-pop`.
 
-Not in Lite (say so, offer the closest, do not hand-write GSAP): parallax, marquee/ticker, scroll scrub, counters, rotating words, button hovers, image wipes/clip reveals, magnetic buttons, page transitions. Counters, word rotation, wipes and hovers are in the paid animatefa.st pack.
+Only do what was asked: animate the named elements only, never the whole page unless the user asked for it.
+
+Not in Lite (change nothing in the files: no runtime, no `MOTION.md`, no other effects; say so, suggest the closest Lite effect, do not hand-write GSAP): parallax, scroll-linked movement, cursor effects, marquee/ticker, scroll scrub, counters, rotating words, button hovers, image wipes/clip reveals, magnetic buttons, page transitions. Counters, word rotation, wipes and hovers are in the paid animatefa.st pack.
 
 ## 4. Motion styleguide: keep motion on brand
 
@@ -133,8 +136,9 @@ Example, `calm` (tempo 1.3, stagger 1.2): `word-slide-up` gets `data-motion-dura
 
 ### 4.5 No MOTION.md yet?
 
-- Whole-page or multi-element request: create `MOTION.md` first from the closest preset (infer it from the brand, copy and visual style; ask if unclear), show it to the user in two lines, then apply.
-- Single-element request: use plain defaults and offer to create a styleguide in one line.
+- First check the request is in Lite (section 3). Not in Lite: change nothing, not even `MOTION.md`, even for a whole-page request.
+- Whole-page request: create `MOTION.md` first from the closest preset (infer it from the brand, copy and visual style; ask if unclear), show it to the user in two lines, then apply.
+- Request for specific elements: use plain defaults and offer to create a styleguide in one line. Do not create `MOTION.md`.
 
 ## 5. Accessibility and performance (handled by the runtime, do not re-implement)
 
@@ -164,7 +168,7 @@ Don't
 ## 7. Webflow specifics
 
 - Designer, by hand: Element settings (D) > Custom attributes > + > Name `data-motion`, Value e.g. `word-slide-up`.
-- Webflow MCP: `data_element_tool` `get_attributes` then `set_attributes` with existing + new attributes. Scripts: `data_scripts_tool` `register_hosted_script` with `hosted_location` = the jsDelivr URL, `integrity_hash` = `sha384-NduON8+acxhHUZVpchMMEz+smjiRFa/dnz/paVPxRatiDv1bV09pnceoIfmdMT5/`, `version` `0.1.1`, `display_name` `animatefa.st Lite`, then `add_site_script` (MCP inline scripts are capped at 2,000 characters, so use the hosted URL; or the user pastes option B in Site settings). Call `webflow_guide_tool` first, tool names change between MCP versions.
+- Webflow MCP: `data_element_tool` `get_attributes` then `set_attributes` with existing + new attributes. Scripts: `data_scripts_tool` `register_hosted_script` with `hosted_location` = the jsDelivr URL, `integrity_hash` = `sha384-NduON8+acxhHUZVpchMMEz+smjiRFa/dnz/paVPxRatiDv1bV09pnceoIfmdMT5/`, `version` `0.1.2`, `display_name` `animatefa.st Lite`, then `add_site_script` (MCP inline scripts are capped at 2,000 characters, so use the hosted URL; or the user pastes option B in Site settings). Call `webflow_guide_tool` first, tool names change between MCP versions.
 - Exported code / DevLink / plain HTML: edit the markup directly.
 
 ## 8. Examples

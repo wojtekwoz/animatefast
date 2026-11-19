@@ -2,7 +2,7 @@
 
 Tasteful text and element animations for Webflow and HTML, applied by your AI coding agent. You describe the motion in plain words ("make the headline come in word by word"), the agent picks one of 12 tuned GSAP effects, writes one `data-motion` attribute, keeps it on brand with your project's `MOTION.md` styleguide, and checks in a real browser that it works.
 
-Early preview (v0.1.1). Made by the people behind gFLUO, the Webflow app for no-code GSAP text animations.
+Early preview (v0.1.2). Made by the people behind gFLUO, the Webflow app for no-code GSAP text animations.
 
 ## Install (Claude Code)
 
@@ -31,7 +31,7 @@ Clone as above, then paste the block from [`AGENTS.md`](AGENTS.md) into your pro
 ## Using the script without the agent
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/wojtekwoz/animatefast@v0.1.1/dist/animatefast-lite.min.js" integrity="sha384-NduON8+acxhHUZVpchMMEz+smjiRFa/dnz/paVPxRatiDv1bV09pnceoIfmdMT5/" crossorigin="anonymous" defer></script>
+<script src="https://cdn.jsdelivr.net/gh/wojtekwoz/animatefast@v0.1.2/dist/animatefast-lite.min.js" integrity="sha384-NduON8+acxhHUZVpchMMEz+smjiRFa/dnz/paVPxRatiDv1bV09pnceoIfmdMT5/" crossorigin="anonymous" defer></script>
 <h1 data-motion="word-slide-up">Hello</h1>
 ```
 
