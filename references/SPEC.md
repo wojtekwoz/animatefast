@@ -43,7 +43,7 @@ Nothing else exists. Do not invent attributes (no ease, distance, direction, rep
 
 ## 3. The 12 effects
 
-Match the user's words to the "Use when / user might say" column. If two fit, prefer the one higher in the list (ranked by real usage on Webflow sites).
+Match the user's words to the "Use when / user might say" column. If two fit, prefer the one higher in the list.
 
 | # | slug | element | what it looks like | use when / user might say (EN, PL) | defaults | good tweaks |
 |---|---|---|---|---|---|---|

@@ -1,21 +1,22 @@
 # animatefa.st
 
-Tasteful text and element animations for Webflow and HTML, applied by your AI coding agent. You describe the motion in plain words ("make the headline come in word by word"), the agent picks one of 12 tuned GSAP effects, writes one `data-motion` attribute, keeps it on brand with your project's `MOTION.md` styleguide, and checks in a real browser that it works.
+Curated text and element animations from the gFLUO library that look good by default, applied by your AI coding agent to Webflow and HTML. You describe the motion in plain words ("make the headline come in word by word"), the agent picks one of 12 tuned GSAP effects, writes one `data-motion` attribute, keeps it on brand with your project's `MOTION.md` styleguide, and checks in a real browser that it works.
 
 Early preview (v0.1.2). Made by the people behind gFLUO, the Webflow app for no-code GSAP text animations.
 
 ## Install (Claude Code)
 
 ```bash
-git clone https://github.com/wojtekwoz/animatefast ~/.claude/skills/animatefast
-cd ~/.claude/skills/animatefast && npm install   # puppeteer-core for the checks; uses your local Chrome
+git clone https://github.com/wojtekwoz/animatefast ~/.claude/skills/animatefast && npm --prefix ~/.claude/skills/animatefast install
 ```
+
+This installs the skill plus puppeteer-core for the browser check, which uses your local Chrome (no browser download).
 
 Then just ask Claude Code, for example: "Animate this landing page, it's a calm architecture studio" or "Niech nagłówek wchodzi słowo po słowie".
 
 ## Install (Codex, Cursor, others)
 
-Clone as above, then paste the block from [`AGENTS.md`](AGENTS.md) into your project's `AGENTS.md` or Cursor rules.
+Run the same command, then paste the block from [`AGENTS.md`](AGENTS.md) into your project's `AGENTS.md` or Cursor rules.
 
 ## What's inside
 
