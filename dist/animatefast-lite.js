@@ -116,7 +116,7 @@
     }
   }
   function schedule() {
-    if (queued) return;
+    if (queued || !pending.length) return;
     queued = true;
     raf(function() {
       queued = false;

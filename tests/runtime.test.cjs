@@ -91,6 +91,45 @@ test("each element plays once and its ScrollTrigger is killed", { skip }, async 
   await pg.close();
 });
 
+test("refresh after the queue drains: new first-screen element plays at once, new below-the-fold element waits for scroll", { skip }, async () => {
+  const pg = await open(browser, fx.file("long-refresh.html", LONG));
+  // record window scroll listener changes so the test sees the detach and the re-attach
+  await pg.evaluate(() => {
+    window.__scrollListeners = [];
+    const add = window.addEventListener, rem = window.removeEventListener;
+    window.addEventListener = function(t) { if (t === "scroll") __scrollListeners.push("add"); return add.apply(this, arguments); };
+    window.removeEventListener = function(t) { if (t === "scroll") __scrollListeners.push("remove"); return rem.apply(this, arguments); };
+  });
+  await waitRevealed(pg, ["l-first"], 3000);
+  await pg.evaluate(() => scrollTo(0, 2300));
+  await waitRevealed(pg, ["l-mid"], 3000);
+  await pg.evaluate(() => scrollTo(0, 3200));
+  await waitRevealed(pg, ["l-foot"], 3000);
+  await pg.evaluate(() => scrollTo(0, 0));
+  await sleep(300);
+  assert.deepStrictEqual(await pg.evaluate(() => __scrollListeners), ["remove"], "scroll listener detached once the queue drained");
+
+  // #n-mid at 2000px: default start "top 80%" is scrollY 2000 - 640 = 1360
+  await pg.evaluate(() => {
+    const box = document.getElementById("l-first").parentElement;
+    box.insertAdjacentHTML("beforeend",
+      '<h2 id="n-top" data-motion="word-slide-up" style="position:absolute;top:450px;left:40px">Added in the first screen</h2>' +
+      '<h2 id="n-mid" data-motion="word-slide-up" style="position:absolute;top:2000px;left:40px">Added below the fold</h2>');
+    MotionStandard.refresh();
+  });
+  await waitRevealed(pg, ["n-top"], 3000);
+  await sleep(1000);
+  assert.strictEqual(await pg.evaluate(() => scrollY), 0, "no scrolling happened");
+  const mid = await byId(pg, "n-mid");
+  assert.ok(mid.ready && unplayed(mid), "new below-the-fold element must wait at scrollY=0: " + JSON.stringify(mid));
+  assert.deepStrictEqual(await pg.evaluate(() => __scrollListeners), ["remove", "add"], "scroll listener re-attached for the new pending element");
+
+  await pg.evaluate(() => scrollTo(0, 1500));
+  await waitRevealed(pg, ["n-mid"], 3000);
+  assert.deepStrictEqual(pg.errors, []);
+  await pg.close();
+});
+
 test("reduced motion: everything visible at once and not split", { skip }, async () => {
   for (const [name, html] of [["short-rm.html", SHORT], ["long-rm.html", LONG]]) {
     const pg = await open(browser, fx.file(name, html), { reduced: true });
