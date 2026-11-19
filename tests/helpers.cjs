@@ -1,3 +1,5 @@
+// Requirements: the browser tests need a local Chrome/Chromium (auto-detected, or CHROME env) and
+// network access to jsDelivr for GSAP 3.15.1. Without Chrome they are skipped, not failed.
 // Shared helpers for the headless browser tests: Chrome detection (same list as scripts/verify.cjs),
 // fixture pages that load the LOCAL dist/animatefast-lite.min.js, and an in-page state probe.
 const path = require("path"), fs = require("fs"), os = require("os");
@@ -6,9 +8,11 @@ const P = require("puppeteer-core");
 const ROOT = path.resolve(__dirname, "..");
 // ANIMATEFAST_RUNTIME=/path/to/other.min.js runs the suite against another build (e.g. an older release)
 const RUNTIME = process.env.ANIMATEFAST_RUNTIME ? path.resolve(process.env.ANIMATEFAST_RUNTIME) : path.join(ROOT, "dist/animatefast-lite.min.js");
+// keep in sync with CHROME_PATHS in scripts/verify.cjs (CHROME env first)
 const CHROME_PATHS = [process.env.CHROME, "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", "/Applications/Chromium.app/Contents/MacOS/Chromium", "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser", "/usr/bin/google-chrome", "/usr/bin/chromium", "/usr/bin/chromium-browser"];
 const exe = CHROME_PATHS.find(p => p && fs.existsSync(p));
-if (!exe) throw new Error("no Chrome found, set CHROME=/path/to/chrome");
+// pass as test options: test(name, { skip: NO_CHROME }, fn)
+const NO_CHROME = exe ? false : "no Chrome found, set CHROME=/path/to/chrome";
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const launch = () => P.launch({ headless: "new", args: ["--no-sandbox"], executablePath: exe });
@@ -77,4 +81,4 @@ async function open(browser, file, { width = 1280, height = 800, reduced = false
   return pg;
 }
 
-module.exports = { ROOT, sleep, launch, page, fixtures, state, byId, waitRevealed, revealed, unplayed, open };
+module.exports = { ROOT, NO_CHROME, sleep, launch, page, fixtures, state, byId, waitRevealed, revealed, unplayed, open };

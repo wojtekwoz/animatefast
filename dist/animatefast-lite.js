@@ -98,12 +98,29 @@
   }
   // onEnter only fires when scroll moves past start, so a start clamped to the
   // current scroll (short page, first screen, page bottom) never fires. check()
-  // plays anything whose start is reached, on every refresh and scroll.
-  var pending = [], hooked = false;
+  // plays anything whose start is reached, on every refresh and (at most once per
+  // frame) on scroll. The window scroll listener is attached only while something
+  // is pending; ScrollTrigger scrollEnd covers a host-set non-window scroller.
+  var pending = [], hooked = false, listening = false, queued = false;
+  var raf = W.requestAnimationFrame || function(f) {
+    return setTimeout(f, 16);
+  };
   function check() {
     pending = pending.filter(function(p) {
       if (!p.done && p.st.start <= p.st.scroll() + 1) p.go();
       return !p.done;
+    });
+    if (!pending.length && listening) {
+      listening = false;
+      W.removeEventListener("scroll", schedule);
+    }
+  }
+  function schedule() {
+    if (queued) return;
+    queued = true;
+    raf(function() {
+      queued = false;
+      check();
     });
   }
   function arm(el, o, play) {
@@ -116,6 +133,10 @@
     } };
     p.st = ScrollTrigger.create({ trigger: el, start: clampedStart(o.start), once: true, onEnter: p.go });
     pending.push(p);
+    if (!listening) {
+      listening = true;
+      W.addEventListener("scroll", schedule, { passive: true });
+    }
   }
   function sibIndex(el) {
     var n = 0, s = el.parentElement ? el.parentElement.children : [];
@@ -409,7 +430,7 @@
     if (!hooked) {
       hooked = true;
       ScrollTrigger.addEventListener("refresh", check);
-      W.addEventListener("scroll", check, { passive: true });
+      ScrollTrigger.addEventListener("scrollEnd", schedule);
     }
     aliases(root);
     var els = [].slice.call((root || D).querySelectorAll("[data-motion]")).filter(function(el) {

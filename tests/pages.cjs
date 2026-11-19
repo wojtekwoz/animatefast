@@ -20,6 +20,14 @@ const LONG = page(`
   <p id="l-foot" data-motion="char-fade-down" style="position:absolute;top:3880px;left:40px">Footer line</p>
 </div>`);
 
+// 4000px tall, #x-el at 2000px with an explicit start "top 40%": threshold is scrollY 2000 - 320 = 1680.
+// A text effect, so the element itself is not transformed and its measured top stays at 2000px.
+const EXPLICIT = page(`
+<div style="position:relative;height:4000px;overflow:hidden">
+  <h2 id="x-first" data-motion="word-slide-up" style="position:absolute;top:300px;left:40px">In the first screen</h2>
+  <h2 id="x-el" data-motion="word-slide-up" data-motion-start="top 40%" style="position:absolute;top:2000px;left:40px">Explicit start at 40 percent</h2>
+</div>`);
+
 // 1100px tall: scrollable at 800px, #r-el at 1000px is below the fold; at 1200px tall the page cannot scroll
 const RESIZE = page(`
 <div style="position:relative;height:1100px">
@@ -59,4 +67,4 @@ const REALISTIC = page(`
 </section>
 <footer style="padding:60px 40px"><p>Made with care.</p></footer>`, "body{background:#f6f4ef}");
 
-module.exports = { SHORT, LONG, RESIZE, REALISTIC, allEffects };
+module.exports = { SHORT, LONG, EXPLICIT, RESIZE, REALISTIC, allEffects };
