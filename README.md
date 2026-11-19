@@ -31,12 +31,26 @@ Run the same command, then paste the block from [`AGENTS.md`](AGENTS.md) into yo
 
 ## Using the script without the agent
 
+In `<head>`:
+
 ```html
+<style>.js [data-motion]:not([data-motion-ready]){visibility:hidden}.ms-reveal [data-motion]{visibility:visible!important}@media (prefers-reduced-motion:reduce){[data-motion]{visibility:visible!important}}</style>
+<script>document.documentElement.className+=" js";setTimeout(function(){document.documentElement.className+=" ms-reveal"},3000)</script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.1/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.1/dist/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.1/dist/SplitText.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/gh/wojtekwoz/animatefast@v0.1.2/dist/animatefast-lite.min.js" integrity="sha384-NduON8+acxhHUZVpchMMEz+smjiRFa/dnz/paVPxRatiDv1bV09pnceoIfmdMT5/" crossorigin="anonymous" defer></script>
-<h1 data-motion="word-slide-up">Hello</h1>
 ```
 
-Full head block (GSAP, pre-hide CSS) and the inline-paste option for Webflow are in `references/SPEC.md` section 1.
+In `<body>`:
+
+```html
+<h1 data-motion="word-slide-up" data-motion-trigger="load">Hello</h1>
+```
+
+Use `data-motion-trigger="load"` for anything in the first screen; everything else animates on scroll by default.
+
+Using Webflow's GSAP toggle instead of loading GSAP yourself, pasting the script inline, or self-hosting it: see `references/SPEC.md` section 1.
 
 ## License
 
