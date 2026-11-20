@@ -44,7 +44,7 @@ const KNOWN_ATTR = ["data-motion", "data-motion-trigger", "data-motion-delay", "
 const FROM_OK = { "image-wipe": ["center", "left", "right", "top", "bottom"], "magnetic": ["text"] };
 
 (async () => {
-  const b = await P.launch({ ...(exe ? { executablePath: exe } : {}), args: ["--no-sandbox"], headless: "new" });
+  const b = await P.launch({ ...(exe ? { executablePath: exe } : {}), args: ["--no-sandbox"], headless: true });
   const pg = await b.newPage();
   await pg.setJavaScriptEnabled(false);
   await pg.setViewport({ width: 1280, height: 800 });

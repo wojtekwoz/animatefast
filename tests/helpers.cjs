@@ -15,7 +15,7 @@ const exe = CHROME_PATHS.find(p => p && fs.existsSync(p));
 const NO_CHROME = exe ? false : "no Chrome found, set CHROME=/path/to/chrome";
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
-const launch = () => P.launch({ headless: "new", args: ["--no-sandbox"], executablePath: exe });
+const launch = () => P.launch({ headless: true, args: ["--no-sandbox"], executablePath: exe });
 
 // head block from references/SPEC.md section 1, with the runtime pointing at the local build
 const HEAD = `<style>.js [data-motion]:not([data-motion-ready]){visibility:hidden}.ms-reveal [data-motion]{visibility:visible!important}@media (prefers-reduced-motion:reduce){[data-motion]{visibility:visible!important}}</style>
