@@ -10,6 +10,9 @@
     "verify": "node scripts/verify.cjs"
   },
   "dependencies": {
-    "puppeteer-core": "^24.0.0"
+    "puppeteer-core": "^25.18.1"
+  },
+  "engines": {
+    "node": ">=22.12.0"
   }
 }

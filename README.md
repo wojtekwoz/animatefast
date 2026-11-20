@@ -12,6 +12,8 @@ git clone https://github.com/wojtekwoz/animatefast ~/.claude/skills/animatefast 
 
 This installs the skill plus puppeteer-core for the browser check, which uses your local Chrome (no browser download).
 
+Needs Node 22.12 or newer and a local Chrome or Chromium.
+
 Then just ask Claude Code, for example: "Animate this landing page, it's a calm architecture studio" or "Niech nagłówek wchodzi słowo po słowie".
 
 ## Install (Codex, Cursor, others)
