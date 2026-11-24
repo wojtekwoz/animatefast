@@ -39,7 +39,7 @@ const PROBE = () => {
 };
 
 (async () => {
-  const b = await P.launch({ headless: "new", args: ["--no-sandbox"], ...(exe ? { executablePath: exe } : {}) });
+  const b = await P.launch({ headless: true, args: ["--no-sandbox"], ...(exe ? { executablePath: exe } : {}) });
   const res = { url, console: [], elements: [], reduced: null, pass: false };
   const pg = await b.newPage();
   pg.on("console", m => { if (["error", "warn", "warning"].includes(m.type())) res.console.push(m.type() + ": " + m.text()); });

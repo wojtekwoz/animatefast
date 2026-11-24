@@ -96,9 +96,47 @@
     s = s || "top 80%";
     return s.indexOf("clamp(") === 0 ? s : "clamp(" + s + ")";
   }
+  // onEnter only fires when scroll moves past start, so a start clamped to the
+  // current scroll (short page, first screen, page bottom) never fires. check()
+  // plays anything whose start is reached, on every refresh and (at most once per
+  // frame) on scroll. The window scroll listener is attached only while something
+  // is pending; ScrollTrigger scrollEnd covers a host-set non-window scroller.
+  var pending = [], hooked = false, listening = false, queued = false;
+  var raf = W.requestAnimationFrame || function(f) {
+    return setTimeout(f, 16);
+  };
+  function check() {
+    pending = pending.filter(function(p) {
+      if (!p.done && p.st.start <= p.st.scroll() + 1) p.go();
+      return !p.done;
+    });
+    if (!pending.length && listening) {
+      listening = false;
+      W.removeEventListener("scroll", schedule);
+    }
+  }
+  function schedule() {
+    if (queued || !pending.length) return;
+    queued = true;
+    raf(function() {
+      queued = false;
+      check();
+    });
+  }
   function arm(el, o, play) {
-    if (o.trigger === "load") play();
-    else ScrollTrigger.create({ trigger: el, start: clampedStart(o.start), once: true, onEnter: play });
+    if (o.trigger === "load") return play();
+    var p = { go: function() {
+      if (p.done) return;
+      p.done = true;
+      p.st && p.st.kill();
+      play();
+    } };
+    p.st = ScrollTrigger.create({ trigger: el, start: clampedStart(o.start), once: true, onEnter: p.go });
+    pending.push(p);
+    if (!listening) {
+      listening = true;
+      W.addEventListener("scroll", schedule, { passive: true });
+    }
   }
   function sibIndex(el) {
     var n = 0, s = el.parentElement ? el.parentElement.children : [];
@@ -389,6 +427,11 @@
       return reveal();
     }
     gsap.registerPlugin(ScrollTrigger, SplitText);
+    if (!hooked) {
+      hooked = true;
+      ScrollTrigger.addEventListener("refresh", check);
+      ScrollTrigger.addEventListener("scrollEnd", schedule);
+    }
     aliases(root);
     var els = [].slice.call((root || D).querySelectorAll("[data-motion]")).filter(function(el) {
       return !seen.has(el) && seen.add(el);

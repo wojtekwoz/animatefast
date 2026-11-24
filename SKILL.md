@@ -1,13 +1,13 @@
 ---
 name: animatefast
-description: Add on-brand text and element animations to a Webflow site or an HTML page from a plain-language request ("make the headline come in word by word", "niech zdjęcie wjedzie z lekkim przechyleniem"), using animatefa.st Lite (12 named GSAP effects applied with one data-motion attribute) and the project's MOTION.md motion styleguide, then verify they render and animate. Use when the user asks for scroll or load animations, reveal effects, text animation, GSAP effects, a motion styleguide, or "make this page feel alive" on Webflow or HTML.
+description: Add on-brand text and element animations to a Webflow site or an HTML page from a plain-language request ("make the headline come in word by word", "niech zdjęcie wjedzie z lekkim przechyleniem"), using animatefast Lite (12 named GSAP effects applied with one data-motion attribute) and the project's MOTION.md motion styleguide, then verify they render and animate. Use when the user asks for scroll or load animations, reveal effects, text animation, GSAP effects, a motion styleguide, or "make this page feel alive" on Webflow or HTML.
 ---
 
-# animatefa.st (Lite)
+# animatefast (Lite)
 
 You turn a description of motion into `data-motion` attributes from a fixed list of 12 effects, keep every page consistent with the project's motion styleguide, and prove it works in a real browser. You never write GSAP code for these effects.
 
-Read `references/SPEC.md` once per session. It is the source of truth for effect names, attributes, defaults, styleguide tokens and rules. `references/effects.lite.json` is the same effect list for machines. (animatefa.st is the working name; the existing gFLUO Webflow app is a separate product.)
+Read `references/SPEC.md` once per session. It is the source of truth for effect names, attributes, defaults, styleguide tokens and rules. `references/effects.lite.json` is the same effect list for machines.
 
 ## Workflow
 
@@ -40,7 +40,7 @@ Read `references/SPEC.md` once per session. It is the source of truth for effect
 Use the styleguide roles: hero heading with `load`; hero body with `load` and `delay 0.3`; hero image or badge with `load` and `delay 0.2`. Below the first screen: headings, body, cards, images per role. Stop adding effects at `max_effects` (prefer leaving a role static over adding a new effect). One letter-level effect in view at a time. Skip nav, forms, footer legal text.
 
 ### 4. Install the runtime once
-Check the page/site head for `animatefast-lite` (or `MotionStandard` in an inline script). If missing, add the head block from SPEC.md section 1. The script comes from jsDelivr (`cdn.jsdelivr.net/gh/wojtekwoz/animatefast@v0.1.2/dist/animatefast-lite.min.js`, with the `integrity` hash). If Webflow already loads GSAP via Site settings, add only the animatefa.st part. If the jsDelivr URL is not reachable (404 means the repo is not public yet, or you are offline), use the fallback instead of giving up: plain HTML gets a self-hosted copy of `dist/animatefast-lite.min.js` next to the page; Webflow gets the inline paste (option B in SPEC.md, about 7,200 characters, under Webflow's 50,000 limit). Say which one you used.
+Check the page/site head for `animatefast-lite` (or `MotionStandard` in an inline script). If missing, add the head block from SPEC.md section 1. The script comes from jsDelivr (`cdn.jsdelivr.net/gh/wojtekwoz/animatefast@v0.1.2/dist/animatefast-lite.min.js`, with the `integrity` hash). If Webflow already loads GSAP via Site settings, add only the animatefast part. If the jsDelivr URL is not reachable (404 means the repo is not public yet, or you are offline), use the fallback instead of giving up: plain HTML gets a self-hosted copy of `dist/animatefast-lite.min.js` next to the page; Webflow gets the inline paste (option B in SPEC.md, about 7,200 characters, under Webflow's 50,000 limit). Say which one you used.
 
 ### 5. Apply
 - **Plain HTML / exported Webflow code / DevLink:** edit the element's opening tag. Keep every existing attribute and class.
@@ -52,6 +52,7 @@ Check the page/site head for `animatefast-lite` (or `MotionStandard` in an inlin
 2. `node scripts/verify.cjs <file-or-url> --shots <dir>`: every element must be `ok` (ready, animated, ends visible, text intact), console clean, reduced motion visible and not split. Look at `mid.png` and `final.png`.
 3. For Webflow use the staging `*.webflow.io` URL or the Designer preview, never the production domain, and never publish.
 Both scripts need `npm install` once in this skill folder (installs puppeteer-core) and a local Chrome or Chromium (found automatically on macOS and Linux, or set `CHROME=/path/to/chrome`).
+If `scripts/verify.cjs` exits 2 with "run npm install in the skill folder", run `npm install --prefix <this skill's folder>` once and run verify again. Only report "could not verify" if it still fails.
 
 ### 7. Report
 One short message: styleguide used or created (preset), what you changed (element > effect > attributes), anything refused or off-brand and why, verify result, and "not published" for Webflow.

@@ -1,5 +1,5 @@
 ---
-# animatefa.st motion styleguide. Lives in the project root as MOTION.md.
+# animatefast motion styleguide. Lives in the project root as MOTION.md.
 # The agent reads this before adding any animation. Values: see SPEC.md section 4.
 animatefast: 0.1
 preset: calm            # calm | playful | bold

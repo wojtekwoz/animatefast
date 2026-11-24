@@ -1,6 +1,6 @@
-# animatefa.st Lite v0.1: effect spec for AI coding agents
+# animatefast Lite v0.1: effect spec for AI coding agents
 
-> Working name animatefa.st (formerly the gFLUO Motion Standard; gFLUO is the existing Webflow app). This file is the effect spec (`references/SPEC.md` in the skill, `llms.txt` in the repo root). A project's own brand styleguide is a separate file called `MOTION.md` in the project root, see section 4.
+> animatefast (formerly the gFLUO Motion Standard; gFLUO is the existing Webflow app, a separate product). This file is the effect spec (`references/SPEC.md` in the skill, `llms.txt` in the repo root). A project's own brand styleguide is a separate file called `MOTION.md` in the project root, see section 4.
 
 > Plain-language text animations for Webflow and HTML. You (the agent) pick one of 12 named effects and write ONE attribute: `data-motion="<effect>"`. A small runtime (GSAP 3.15 + ScrollTrigger + SplitText, all free) does the rest: timing, easing, splitting, accessibility. Never write GSAP code yourself for these effects.
 
@@ -19,9 +19,9 @@ Put this in the page `<head>` (Webflow: Site settings > Custom code > Head code,
 <script src="https://cdn.jsdelivr.net/gh/wojtekwoz/animatefast@v0.1.2/dist/animatefast-lite.min.js" integrity="sha384-NduON8+acxhHUZVpchMMEz+smjiRFa/dnz/paVPxRatiDv1bV09pnceoIfmdMT5/" crossorigin="anonymous" defer></script>
 ```
 
-- The animatefa.st script is served by jsDelivr straight from the public GitHub repo `wojtekwoz/animatefast`, pinned to the tag `v0.1.2` (pinned tags are cached for good and match the `integrity` hash). If the URL returns 404, use option B or C.
-- Order matters: GSAP, ScrollTrigger, SplitText, then animatefa.st Lite. All `defer`.
-- If Webflow already loads GSAP (Site settings > GSAP toggles with ScrollTrigger and SplitText on), do not load it twice: keep only the style, the small inline script and the animatefa.st script.
+- The animatefast script is served by jsDelivr straight from the public GitHub repo `wojtekwoz/animatefast`, pinned to the tag `v0.1.2` (pinned tags are cached for good and match the `integrity` hash). If the URL returns 404, use option B or C.
+- Order matters: GSAP, ScrollTrigger, SplitText, then animatefast Lite. All `defer`.
+- If Webflow already loads GSAP (Site settings > GSAP toggles with ScrollTrigger and SplitText on), do not load it twice: keep only the style, the small inline script and the animatefast script.
 - The first `<style>` + `<script>` pair stops a flash of the un-animated text and reveals everything after 3 s if any script fails.
 
 **Option B, inline paste (no hosting at all).** Replace the last `<script src=...>` line with `<script>` + the full contents of `dist/animatefast-lite.min.js` + `</script>`. The file is 6,544 characters, so the whole head block is about 7,200 characters. Webflow's Head code field takes up to 50,000 characters (custom code needs a paid site plan), so this fits with room to spare. Keep it after the GSAP tags; it waits for the page to finish parsing, so the deferred GSAP files are ready by then. GSAP itself (about 70 KB) is too big to inline: load it from jsDelivr as above or use Webflow's GSAP toggle. Webflow MCP inline scripts are capped at 2,000 characters, so over MCP use the hosted URL (option A).
@@ -43,7 +43,7 @@ Nothing else exists. Do not invent attributes (no ease, distance, direction, rep
 
 ## 3. The 12 effects
 
-Match the user's words to the "Use when / user might say" column. If two fit, prefer the one higher in the list (ranked by real usage on Webflow sites).
+Match the user's words to the "Use when / user might say" column. If two fit, prefer the one higher in the list.
 
 | # | slug | element | what it looks like | use when / user might say (EN, PL) | defaults | good tweaks |
 |---|---|---|---|---|---|---|
@@ -69,7 +69,7 @@ Modifiers in the request:
 
 Only do what was asked: animate the named elements only, never the whole page unless the user asked for it.
 
-Not in Lite (change nothing in the files: no runtime, no `MOTION.md`, no other effects; say so, suggest the closest Lite effect, do not hand-write GSAP): parallax, scroll-linked movement, cursor effects, marquee/ticker, scroll scrub, counters, rotating words, button hovers, image wipes/clip reveals, magnetic buttons, page transitions. Counters, word rotation, wipes and hovers are in the paid animatefa.st pack.
+Not in Lite (change nothing in the files: no runtime, no `MOTION.md`, no other effects; say so, suggest the closest Lite effect, do not hand-write GSAP): parallax, scroll-linked movement, cursor effects, marquee/ticker, scroll scrub, counters, rotating words, button hovers, image wipes/clip reveals, magnetic buttons, page transitions. Counters, word rotation, wipes and hovers are in the paid animatefast pack.
 
 ## 4. Motion styleguide: keep motion on brand
 
