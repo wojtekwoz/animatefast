@@ -2,9 +2,9 @@
 
 Your AI coding agent adds tasteful text and element animations to a Webflow site or HTML page from a plain-language request, then checks them in a real browser.
 
-![Same page, one prompt in Claude Code. Left: before. Right: after.](docs/before-after.gif)
+![All 12 animatefast effects, each one data-motion attribute on a real page.](docs/effects-reel.gif)
 
-*Same page, one prompt in Claude Code. Left: before. Right: after.*
+*All 12 effects, recorded frame by frame in a real browser. Each one is a single `data-motion` attribute.*
 
 ## Install
 
